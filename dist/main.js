@@ -4,7 +4,10 @@ import { createGame, COIN_POSITIONS, TREE_POSITIONS, ROCK_POSITIONS } from './ga
 
 const $ = id => document.getElementById(id);
 const canvas=$('game'), stage=$('stage'), game=createGame();
-const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionPreference=matchMedia('(prefers-reduced-motion: reduce)');
+let motionOverride=null;
+try{const saved=localStorage.getItem('pocket-meadow-motion-v1');if(saved==='on'||saved==='off')motionOverride=saved==='on';}catch{}
+let motionEnabled=motionOverride??!motionPreference.matches;
 const keys=new Set(), touch={x:0,y:0};
 let ready=false, renderer, player, coins=[], legs=[], arms=[], particleMesh;
 let frame=0,last=0,visualTime=0,stride=0,dirty=true,soundOn=false,audio;
@@ -187,7 +190,7 @@ function resumeRun(){closeResult();game.resume();sync();canvas.focus({preventScr
 function onGameEvents(events){
   for(const event of events){
     if(event.type==='coin'){
-      coins[event.id].visible=false;if(!reducedMotion)burst(event.x,event.z);
+      coins[event.id].visible=false;if(motionEnabled)burst(event.x,event.z);
       tone(740+game.state.collected*45);tone(1110+game.state.collected*30,.075);
       if(game.state.collected===1)toast('A little treasure! 11 to go.');
       else if(game.state.collected===6)toast('Half a pocket full. Keep wandering.');
@@ -195,7 +198,7 @@ function onGameEvents(events){
     }
     if(event.type==='won'){
       if(best===null||game.state.elapsed<best){best=game.state.elapsed;try{localStorage.setItem('pocket-meadow-best-v1',String(best));}catch{}}
-      $('best').textContent=formatLap(best);if(!reducedMotion)burst(game.state.player.x,game.state.player.z,true);
+      $('best').textContent=formatLap(best);if(motionEnabled)burst(game.state.player.x,game.state.player.z,true);
       [880,1108,1318,1760].forEach((f,i)=>tone(f,i*.10));setResult('won');
     }
     if(event.type==='lost')setResult('lost');
@@ -223,8 +226,8 @@ function tick(now){
   }
   const swing=moved?Math.sin(stride)*.58:0;
   legs[0].rotation.x=swing;legs[1].rotation.x=-swing;arms[0].rotation.x=-swing*.65;arms[1].rotation.x=swing*.65;
-  const ambient=!reducedMotion&&(active||game.state.status==='ready');
-  if(ambient){visualTime+=dt;coins.forEach((coin,i)=>{coin.rotation.y=visualTime*1.6+i*.7;coin.position.y=.62+Math.sin(visualTime*2.1+i*.8)*.10;});}
+  const ambient=motionEnabled&&(active||game.state.status==='ready');
+  if(ambient){visualTime+=dt;coins.forEach((coin,i)=>{coin.rotation.y=visualTime*2.4+i*.7;coin.position.y=.62+Math.sin(visualTime*2.1+i*.8)*.18;});}
   const particles=updateParticles(dt);
   if(now>toastUntil)$('toast').classList.remove('visible');
   sync();renderer.render(world,camera);dirty=false;
@@ -253,6 +256,20 @@ $('sound').addEventListener('click',async()=>{
   $('sound').setAttribute('aria-pressed',String(soundOn));$('sound').setAttribute('aria-label',`Turn sound ${soundOn?'off':'on'}`);
   $('sound-waves').setAttribute('d',soundOn?'M17 8c2 2 2 6 0 8m3-11c4 4 4 10 0 14':'m17 9 5 6m0-6-5 6');
 });
+function updateMotionControl(){
+  $('motion-label').textContent=`Motion ${motionEnabled?'on':'off'}`;
+  $('motion').setAttribute('aria-pressed',String(motionEnabled));
+  $('motion').setAttribute('aria-label',`Turn coin motion ${motionEnabled?'off':'on'}`);
+  $('motion').title=`Turn coin motion ${motionEnabled?'off':'on'}`;
+}
+$('motion').addEventListener('click',()=>{
+  motionEnabled=!motionEnabled;motionOverride=motionEnabled;
+  try{localStorage.setItem('pocket-meadow-motion-v1',motionEnabled?'on':'off');}catch{}
+  if(!motionEnabled)particlePool.forEach(p=>p.life=0);
+  updateMotionControl();if(ready)wake();
+});
+motionPreference.addEventListener('change',()=>{if(motionOverride===null){motionEnabled=!motionPreference.matches;updateMotionControl();if(ready)wake();}});
+updateMotionControl();
 $('help').addEventListener('click',()=>{helpWasRunning=game.state.status==='playing';if(helpWasRunning){game.pause();keys.clear();sync();} $('help-dialog').showModal();wake();});
 function closeHelp(){$('help-dialog').close();}
 $('close-help').addEventListener('click',closeHelp);$('help-done').addEventListener('click',closeHelp);

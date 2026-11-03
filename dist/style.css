@@ -12,3 +12,5 @@
 @media(min-width:761px) and (max-width:1100px){.intro{width:220px}.intro h1{font-size:38px;letter-spacing:-1.5px}.intro p{font-size:12px}}
 @media(max-width:900px) and (min-width:761px){.best-stat{display:none}}
 @media(max-width:760px){.intro p{font-size:12px}.player-label{font-size:8px;padding:3px 6px}.stat-label{font-size:7px}.intro-meta{color:#597353}}
+.motion-button{gap:6px;white-space:nowrap}.motion-button svg{width:18px;height:18px}.motion-button[aria-pressed="false"]{color:#788d7e}
+@media(max-width:760px){.motion-button span{display:none}.motion-button{padding:10px 4px}.toolbar{gap:6px}.brand{font-size:18px}}

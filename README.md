@@ -34,4 +34,4 @@ npm run build
 
 All game assets were authored for this project in Blender 5.2.2. The shared flat vertex-colour material uses no image textures. Three.js 0.180.0 is MIT licensed; its license is included in `dist/vendor/THREE-LICENSE.txt` after building. The 3dviz-pro-max low-poly catalog record and Blender/Three.js handoff guidance informed the custom scene; no finished kit or third-party model was reused.
 
-Best lap times stay in this browser's local storage. Audio is optional and synthesized locally. Reduced-motion preferences stop decorative coin motion and collection particles. Leaving the window pauses an active round.
+Best lap times stay in this browser's local storage. Audio is optional and synthesized locally. Coin motion follows the device's reduced-motion preference until changed with the Motion button; that choice is saved on this device. Leaving the window pauses an active round.
