@@ -1,0 +1,14 @@
+{
+  "name": "pocket-meadow",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "node tools/serve.mjs",
+    "build": "node tools/build.mjs",
+    "test": "node --test tests/game.test.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  }
+}

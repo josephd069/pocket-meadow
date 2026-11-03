@@ -1,0 +1,59 @@
+{
+  "blender": "5.2.2 LTS",
+  "unit": "metre",
+  "materials": 1,
+  "assets": {
+    "Asset_Player": {
+      "triangles": 376,
+      "meshes": 5,
+      "non_manifold_edges": 0
+    },
+    "Asset_Coin": {
+      "triangles": 204,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Pine": {
+      "triangles": 70,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Tree": {
+      "triangles": 84,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Rock": {
+      "triangles": 40,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Crate": {
+      "triangles": 72,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Flower": {
+      "triangles": 136,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Grass": {
+      "triangles": 12,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Fence": {
+      "triangles": 78,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    },
+    "Asset_Cottage": {
+      "triangles": 192,
+      "meshes": 1,
+      "non_manifold_edges": 0
+    }
+  },
+  "total_triangles": 1264,
+  "glb_bytes": 147368
+}

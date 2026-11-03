@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#edf3e9" />
+  <meta name="description" content="A pocket-sized coin-collecting adventure. Explore a sunny low-poly meadow and find all twelve coins." />
+  <title>Pocket Meadow — a tiny coin hunt</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="Pocket Meadow home">
+      <span class="brand-mark"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M8 24c0-9 7-16 17-17 0 11-6 18-15 17M9 24 21 12" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <span>Pocket Meadow<small>A TINY COIN HUNT</small></span>
+    </a>
+    <nav class="toolbar" aria-label="Game options">
+      <button id="help" class="text-button">How to play <span class="question-mark">?</span></button>
+      <span class="toolbar-divider"></span>
+      <button id="sound" class="icon-button sound-button" aria-label="Turn sound on" aria-pressed="false"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path id="sound-waves" d="m17 9 5 6m0-6-5 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      <button id="restart" class="text-button restart-button" aria-label="Restart adventure"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 9a8 8 0 1 1-.4 5M4 3v6h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Restart</span></button>
+    </nav>
+  </header>
+
+  <main id="stage" class="stage" data-state="loading">
+    <canvas id="game" tabindex="0" aria-label="Pocket Meadow game. Move with WASD or arrow keys. Collect all twelve coins. Escape pauses the game."></canvas>
+    <span id="player-label" class="player-label" aria-hidden="true" hidden>Pip<span></span></span>
+    <div class="hud" aria-label="Game progress">
+      <div class="stat coin-stat"><span class="coin-icon" aria-hidden="true">I</span><span><span class="stat-label">COINS FOUND</span><strong id="count">0 <span>/ 12</span></strong></span></div>
+      <div class="stat timer-stat"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M9 2h6m-3 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span><span class="stat-label">TIME LEFT</span><strong id="timer">01:00</strong></span></div>
+      <div class="stat best-stat"><span class="best-star" aria-hidden="true">✧</span><span><span class="stat-label">PERSONAL BEST</span><strong id="best">—</strong></span></div>
+      <button id="pause" class="pause-button" aria-label="Pause game" disabled><span aria-hidden="true">Ⅱ</span></button>
+    </div>
+
+    <section id="intro" class="intro" aria-labelledby="title">
+      <span class="eyebrow"><span></span>A LITTLE OUTDOOR ADVENTURE</span>
+      <h1 id="title">Small world.<br />Golden moments.</h1>
+      <p>A sunny meadow. Twelve hidden coins.<br />Take Pip on a little treasure hunt.</p>
+      <button id="start" class="primary-button" disabled><span id="start-label">Packing your adventure…</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+      <div class="intro-meta"><span><i class="tiny-coin"></i>12 coins to find</span><span><i class="tiny-clock"></i>60 seconds</span></div>
+    </section>
+
+    <aside id="mission" class="mission" hidden><span class="eyebrow">FOLLOW YOUR CURIOSITY</span><h2>Find the golden trail.</h2><p>There’s a coin around every corner.</p><div id="progress-dots" class="progress-dots" aria-hidden="true"></div></aside>
+    <div class="world-label" aria-hidden="true"><span class="world-dot"></span>THE MEADOW <span class="label-line"></span>01</div>
+    <div id="joystick-wrap" class="joystick-wrap"><button id="joystick" aria-label="Drag to move Pip" class="joystick"><span id="joystick-knob"></span><span class="sr-only">Touch joystick. Drag in the direction you want to walk.</span></button><span>DRAG TO WANDER</span></div>
+    <div class="controls-hint"><span class="key-group"><kbd>W</kbd><span><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span></span><span><strong>A little room to roam.</strong><span>WASD or arrows to move <i>·</i> Shift to dash</span></span><span class="controls-leaf" aria-hidden="true">✳</span></div>
+    <div class="ambient-note"><span></span>Made for a small, happy break.</div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <div id="result" class="result" hidden>
+      <section class="result-card" aria-labelledby="result-title" role="dialog" aria-modal="true">
+        <div class="result-medal" aria-hidden="true">✦</div>
+        <span id="result-eyebrow" class="eyebrow">A POCKET FULL OF SUNSHINE</span>
+        <h2 id="result-title">You found them all!</h2>
+        <p id="result-copy"></p>
+        <div id="result-stats" class="result-stats"></div>
+        <button id="play-again" class="primary-button"><span>Another little adventure</span><span class="button-arrow" aria-hidden="true">↗</span></button>
+        <span id="result-footnote" class="result-footnote">There’s always time for one more lap.</span>
+      </section>
+    </div>
+    <div id="error" class="error-card" hidden role="alert"><h2>The meadow couldn’t load.</h2><p id="error-message">Please refresh and try again.</p><button class="primary-button" id="retry">Try again ↗</button></div>
+  </main>
+
+  <dialog id="help-dialog" class="help-dialog">
+    <button id="close-help" class="close-button" aria-label="Close instructions">×</button>
+    <span class="eyebrow">YOUR TINY FIELD GUIDE</span><h2>Follow the golden trail.</h2>
+    <p>Guide Pip around the meadow and collect all <strong>12 gold coins</strong> before the 60-second timer runs out.</p>
+    <dl><div><dt>WASD / Arrow keys</dt><dd>Walk around</dd></div><div><dt>Hold Shift</dt><dd>Dash a little faster</dd></div><div><dt>Escape / Pause</dt><dd>Take a breather</dd></div><div><dt>On a phone or tablet</dt><dd>Drag the on-screen joystick</dd></div></dl>
+    <p class="help-note">Pip stops at trees, rocks, the cottage, and the island edge. Your fastest successful lap is saved on this device.</p>
+    <button id="help-done" class="primary-button">Got it. Let’s wander. ↗</button>
+  </dialog>
+  <script type="module" src="./main.js"></script>
+</body>
+</html>

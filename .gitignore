@@ -1,0 +1,6 @@
+node_modules/
+.local/
+*.blend1
+*.log
+__pycache__/
+*.pyc
