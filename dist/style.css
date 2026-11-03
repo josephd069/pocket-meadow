@@ -13,4 +13,5 @@
 @media(max-width:900px) and (min-width:761px){.best-stat{display:none}}
 @media(max-width:760px){.intro p{font-size:12px}.player-label{font-size:8px;padding:3px 6px}.stat-label{font-size:7px}.intro-meta{color:#597353}}
 .motion-button{gap:6px;white-space:nowrap}.motion-button svg{width:18px;height:18px}.motion-button[aria-pressed="false"]{color:#788d7e}
-@media(max-width:760px){.motion-button span{display:none}.motion-button{padding:10px 4px}.toolbar{gap:6px}.brand{font-size:18px}}
+@media(max-width:760px){.help-label{display:none}.question-mark{display:grid;width:18px;height:18px;font-size:11px}.motion-button span{display:inline}.motion-button{padding:10px 2px;font-size:9px;gap:3px}.topbar{padding:0 14px}.toolbar{gap:3px}.brand{font-size:16px;gap:7px}}
+@media(max-width:350px){.brand{font-size:14px}.brand-mark{width:30px;height:30px}.brand small{display:none}.motion-button span{font-size:0}.motion-button span::after{font-size:9px}.motion-button[aria-pressed="true"] span::after{content:'On'}.motion-button[aria-pressed="false"] span::after{content:'Off'}}
